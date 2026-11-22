@@ -1,49 +1,188 @@
-# ==============================================================================
-#  FAMILY CALENDAR BACKEND PACKAGE
-# ==============================================================================
-#  INSTRUCTIONS:
-#  1. Place this file in your /config/packages/ folder.
-#  2. Ensure your configuration.yaml has: 
-#     homeassistant:
-#       packages: !include_dir_named packages
-#  3. RESTART Home Assistant.
-# ==============================================================================
+# =============================================================================
+# FAMILY WALL PACKAGE
+# =============================================================================
+# Install: copy this file to /config/packages/family_calendar.yaml
+# and make sure configuration.yaml contains:
+#
+#   homeassistant:
+#     packages: !include_dir_named packages
+#
+# HOUSEHOLD — edit ONE file, then refresh the wall browser:
+#   /config/www/skylight-wall/household.json
+#   (this repo: www/skylight-wall/household.json)
+#
+# Change names, colors, avatars, calendar entity ids, chore labels,
+# rewards, and list entity ids there. Member ids p1-p4 and chore slots
+# 1-8 are the helpers below. Do not rename those helpers.
+# Calendar entity ids inside the legacy add-event script still have
+# an UPDATE THIS ENTITY marker for the old popup path. The wall itself
+# reads calendars from household.json.
+# =============================================================================
 
-# 1. HELPERS (The Variables)
 input_text:
-  # Filter Toggles (RegEx: .* = Show, ^$ = Hide)
   calendar1_calendar_filter:
     name: calendar1 Filter
     initial: ".*"
+    max: 10
   calendar2_calendar_filter:
     name: calendar2 Filter
     initial: ".*"
+    max: 10
   calendar3_calendar_filter:
     name: calendar3 Filter
     initial: ".*"
+    max: 10
   calendar4_calendar_filter:
     name: calendar4 Filter
     initial: ".*"
+    max: 10
   family_calendar_filter:
     name: Family Filter
     initial: ".*"
+    max: 10
   birthdays_calendar_filter:
     name: Birthdays Filter
     initial: ".*"
+    max: 10
   holidays_calendar_filter:
     name: Holidays Filter
     initial: ".*"
-
-  # Event Form Data
+    max: 10
   calendar_event_title:
     name: Event Title
     icon: mdi:format-title
+    max: 100
   calendar_event_description:
     name: Event Description
     icon: mdi:text
+    max: 255
+  skylight_p1_rewards:
+    name: Skylight p1 reward log
+    max: 255
+    initial: ""
+    icon: mdi:gift
+  skylight_p2_rewards:
+    name: Skylight p2 reward log
+    max: 255
+    initial: ""
+    icon: mdi:gift
+  skylight_p3_rewards:
+    name: Skylight p3 reward log
+    max: 255
+    initial: ""
+    icon: mdi:gift
+  skylight_p4_rewards:
+    name: Skylight p4 reward log
+    max: 255
+    initial: ""
+    icon: mdi:gift
+  skylight_meal_mon_breakfast:
+    name: Monday Breakfast
+    max: 80
+    initial: "Oatmeal"
+    icon: mdi:silverware-fork-knife
+  skylight_meal_mon_lunch:
+    name: Monday Lunch
+    max: 80
+    initial: "Leftovers"
+    icon: mdi:silverware-fork-knife
+  skylight_meal_mon_dinner:
+    name: Monday Dinner
+    max: 80
+    initial: "Pasta"
+    icon: mdi:silverware-fork-knife
+  skylight_meal_tue_breakfast:
+    name: Tuesday Breakfast
+    max: 80
+    initial: "Eggs"
+    icon: mdi:silverware-fork-knife
+  skylight_meal_tue_lunch:
+    name: Tuesday Lunch
+    max: 80
+    initial: "Sandwiches"
+    icon: mdi:silverware-fork-knife
+  skylight_meal_tue_dinner:
+    name: Tuesday Dinner
+    max: 80
+    initial: "Stir fry"
+    icon: mdi:silverware-fork-knife
+  skylight_meal_wed_breakfast:
+    name: Wednesday Breakfast
+    max: 80
+    initial: "Yogurt"
+    icon: mdi:silverware-fork-knife
+  skylight_meal_wed_lunch:
+    name: Wednesday Lunch
+    max: 80
+    initial: "Soup"
+    icon: mdi:silverware-fork-knife
+  skylight_meal_wed_dinner:
+    name: Wednesday Dinner
+    max: 80
+    initial: "Roast chicken"
+    icon: mdi:silverware-fork-knife
+  skylight_meal_thu_breakfast:
+    name: Thursday Breakfast
+    max: 80
+    initial: "Smoothie"
+    icon: mdi:silverware-fork-knife
+  skylight_meal_thu_lunch:
+    name: Thursday Lunch
+    max: 80
+    initial: "Quesadillas"
+    icon: mdi:silverware-fork-knife
+  skylight_meal_thu_dinner:
+    name: Thursday Dinner
+    max: 80
+    initial: "Soup & grilled cheese"
+    icon: mdi:silverware-fork-knife
+  skylight_meal_fri_breakfast:
+    name: Friday Breakfast
+    max: 80
+    initial: "Pancakes"
+    icon: mdi:silverware-fork-knife
+  skylight_meal_fri_lunch:
+    name: Friday Lunch
+    max: 80
+    initial: "Leftovers"
+    icon: mdi:silverware-fork-knife
+  skylight_meal_fri_dinner:
+    name: Friday Dinner
+    max: 80
+    initial: "Pizza"
+    icon: mdi:silverware-fork-knife
+  skylight_meal_sat_breakfast:
+    name: Saturday Breakfast
+    max: 80
+    initial: "Eggs"
+    icon: mdi:silverware-fork-knife
+  skylight_meal_sat_lunch:
+    name: Saturday Lunch
+    max: 80
+    initial: "Eat out"
+    icon: mdi:silverware-fork-knife
+  skylight_meal_sat_dinner:
+    name: Saturday Dinner
+    max: 80
+    initial: "Burgers"
+    icon: mdi:silverware-fork-knife
+  skylight_meal_sun_breakfast:
+    name: Sunday Breakfast
+    max: 80
+    initial: "Pancakes"
+    icon: mdi:silverware-fork-knife
+  skylight_meal_sun_lunch:
+    name: Sunday Lunch
+    max: 80
+    initial: "Sandwiches"
+    icon: mdi:silverware-fork-knife
+  skylight_meal_sun_dinner:
+    name: Sunday Dinner
+    max: 80
+    initial: "Tacos"
+    icon: mdi:silverware-fork-knife
 
 input_select:
-  # The dropdown list for "Who is this event for?"
   calendar_select:
     name: Select Calendar
     options:
@@ -53,8 +192,6 @@ input_select:
       - calendar4
       - Family
     icon: mdi:calendar-check
-  
-  # The View selector (Week, Month, etc)
   calendar_view:
     name: Calendar View
     options:
@@ -66,7 +203,6 @@ input_select:
     initial: Week
 
 input_datetime:
-  # Event start/end times
   calendar_event_start:
     has_date: true
     has_time: true
@@ -79,20 +215,506 @@ input_datetime:
   calendar_day_event_end:
     has_date: true
     has_time: false
+  skylight_sleep_start:
+    name: Skylight sleep starts
+    has_date: false
+    has_time: true
+    initial: "21:30:00"
+    icon: mdi:weather-night
+  skylight_sleep_end:
+    name: Skylight sleep ends
+    has_date: false
+    has_time: true
+    initial: "06:30:00"
+    icon: mdi:weather-sunny
+  skylight_p1_c1_done:
+    name: Skylight p1 chore 1 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p1_c2_done:
+    name: Skylight p1 chore 2 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p1_c3_done:
+    name: Skylight p1 chore 3 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p1_c4_done:
+    name: Skylight p1 chore 4 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p1_c5_done:
+    name: Skylight p1 chore 5 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p1_c6_done:
+    name: Skylight p1 chore 6 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p1_c7_done:
+    name: Skylight p1 chore 7 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p1_c8_done:
+    name: Skylight p1 chore 8 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p2_c1_done:
+    name: Skylight p2 chore 1 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p2_c2_done:
+    name: Skylight p2 chore 2 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p2_c3_done:
+    name: Skylight p2 chore 3 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p2_c4_done:
+    name: Skylight p2 chore 4 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p2_c5_done:
+    name: Skylight p2 chore 5 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p2_c6_done:
+    name: Skylight p2 chore 6 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p2_c7_done:
+    name: Skylight p2 chore 7 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p2_c8_done:
+    name: Skylight p2 chore 8 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p3_c1_done:
+    name: Skylight p3 chore 1 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p3_c2_done:
+    name: Skylight p3 chore 2 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p3_c3_done:
+    name: Skylight p3 chore 3 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p3_c4_done:
+    name: Skylight p3 chore 4 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p3_c5_done:
+    name: Skylight p3 chore 5 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p3_c6_done:
+    name: Skylight p3 chore 6 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p3_c7_done:
+    name: Skylight p3 chore 7 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p3_c8_done:
+    name: Skylight p3 chore 8 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p4_c1_done:
+    name: Skylight p4 chore 1 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p4_c2_done:
+    name: Skylight p4 chore 2 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p4_c3_done:
+    name: Skylight p4 chore 3 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p4_c4_done:
+    name: Skylight p4 chore 4 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p4_c5_done:
+    name: Skylight p4 chore 5 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p4_c6_done:
+    name: Skylight p4 chore 6 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p4_c7_done:
+    name: Skylight p4 chore 7 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
+  skylight_p4_c8_done:
+    name: Skylight p4 chore 8 last done
+    has_date: true
+    has_time: false
+    initial: "2000-01-01"
+    icon: mdi:check-circle
 
 input_boolean:
-  # UI Toggles
   calendar_all_day_event:
     name: All Day Event
     icon: mdi:calendar-clock
   family_calendar_show:
     name: Show Family Calendar
+  skylight_sleep_enabled:
+    name: Skylight sleep schedule
+    icon: mdi:moon-waning-crescent
+    initial: true
+  skylight_asleep:
+    name: Skylight night hours
+    icon: mdi:power-sleep
+    initial: false
+  skylight_sound:
+    name: Skylight chime
+    icon: mdi:volume-high
+    initial: true
 
-# 2. SCRIPTS (The Logic)
+input_number:
+  skylight_idle_minutes:
+    name: Skylight screensaver minutes
+    min: 1
+    max: 120
+    step: 1
+    initial: 5
+    mode: box
+    icon: mdi:panorama
+  skylight_wake_minutes:
+    name: Skylight wake minutes
+    min: 1
+    max: 120
+    step: 1
+    initial: 10
+    mode: box
+    icon: mdi:gesture-tap
+
+counter:
+  skylight_p1_stars:
+    name: Skylight p1 stars
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:star-four-points
+  skylight_p1_c1_streak:
+    name: Skylight p1 chore 1 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p1_c2_streak:
+    name: Skylight p1 chore 2 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p1_c3_streak:
+    name: Skylight p1 chore 3 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p1_c4_streak:
+    name: Skylight p1 chore 4 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p1_c5_streak:
+    name: Skylight p1 chore 5 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p1_c6_streak:
+    name: Skylight p1 chore 6 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p1_c7_streak:
+    name: Skylight p1 chore 7 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p1_c8_streak:
+    name: Skylight p1 chore 8 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p2_stars:
+    name: Skylight p2 stars
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:star-four-points
+  skylight_p2_c1_streak:
+    name: Skylight p2 chore 1 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p2_c2_streak:
+    name: Skylight p2 chore 2 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p2_c3_streak:
+    name: Skylight p2 chore 3 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p2_c4_streak:
+    name: Skylight p2 chore 4 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p2_c5_streak:
+    name: Skylight p2 chore 5 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p2_c6_streak:
+    name: Skylight p2 chore 6 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p2_c7_streak:
+    name: Skylight p2 chore 7 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p2_c8_streak:
+    name: Skylight p2 chore 8 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p3_stars:
+    name: Skylight p3 stars
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:star-four-points
+  skylight_p3_c1_streak:
+    name: Skylight p3 chore 1 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p3_c2_streak:
+    name: Skylight p3 chore 2 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p3_c3_streak:
+    name: Skylight p3 chore 3 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p3_c4_streak:
+    name: Skylight p3 chore 4 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p3_c5_streak:
+    name: Skylight p3 chore 5 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p3_c6_streak:
+    name: Skylight p3 chore 6 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p3_c7_streak:
+    name: Skylight p3 chore 7 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p3_c8_streak:
+    name: Skylight p3 chore 8 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p4_stars:
+    name: Skylight p4 stars
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:star-four-points
+  skylight_p4_c1_streak:
+    name: Skylight p4 chore 1 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p4_c2_streak:
+    name: Skylight p4 chore 2 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p4_c3_streak:
+    name: Skylight p4 chore 3 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p4_c4_streak:
+    name: Skylight p4 chore 4 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p4_c5_streak:
+    name: Skylight p4 chore 5 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p4_c6_streak:
+    name: Skylight p4 chore 6 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p4_c7_streak:
+    name: Skylight p4 chore 7 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+  skylight_p4_c8_streak:
+    name: Skylight p4 chore 8 streak
+    initial: 0
+    step: 1
+    minimum: 0
+    maximum: 9999
+    icon: mdi:fire
+
 script:
-  # --- Filter Toggles ---
   calendar1_calendar_visible_filter:
     alias: Toggle calendar1 Calendar
+    mode: single
     sequence:
       - action: input_text.set_value
         target:
@@ -102,6 +724,7 @@ script:
 
   calendar2_calendar_visible_filter:
     alias: Toggle calendar2 Calendar
+    mode: single
     sequence:
       - action: input_text.set_value
         target:
@@ -111,6 +734,7 @@ script:
 
   calendar3_calendar_visible_filter:
     alias: Toggle calendar3 Calendar
+    mode: single
     sequence:
       - action: input_text.set_value
         target:
@@ -120,6 +744,7 @@ script:
 
   calendar4_calendar_visible_filter:
     alias: Toggle calendar4 Calendar
+    mode: single
     sequence:
       - action: input_text.set_value
         target:
@@ -129,6 +754,7 @@ script:
 
   family_calendar_visible_filter:
     alias: Toggle Family Calendar
+    mode: single
     sequence:
       - action: input_text.set_value
         target:
@@ -138,6 +764,7 @@ script:
 
   birthdays_calendar_visible_filter:
     alias: Toggle Birthdays Calendar
+    mode: single
     sequence:
       - action: input_text.set_value
         target:
@@ -147,6 +774,7 @@ script:
 
   holidays_calendar_visible_filter:
     alias: Toggle Holidays Calendar
+    mode: single
     sequence:
       - action: input_text.set_value
         target:
@@ -154,27 +782,19 @@ script:
         data:
           value: "{% if is_state('input_text.holidays_calendar_filter', '.*') %}^${% else %}.*{% endif %}"
 
-  # --- Add Event Logic ---
   add_google_calendar_event:
     alias: Process Add Calendar Event
+    mode: queued
     sequence:
       - variables:
-          # ====================================================================
-          # CONFIGURATION: ENTITY MAPPING
-          # Map the Dropdown Name (Left) to your Entity ID (Right).
-          # ====================================================================
           calendar_map:
-            "calendar1": "calendar.calendar1" #<--- UPDATE THIS ENTITY
-            "calendar2": "calendar.calendar2" #<--- UPDATE THIS ENTITY
-            "calendar3": "calendar.calendar3" #<--- UPDATE THIS ENTITY
-            "calendar4": "calendar.calendar4" #<--- UPDATE THIS ENTITY
-            "Family": "calendar.family" #<--- UPDATE THIS ENTITY
-          
-          # Selects the entity based on the map above
-          target_calendar: "{{ calendar_map.get(states('input_select.calendar_select'), 'calendar.family') }}" #<--- UPDATE THIS ENTITY
-
+            "calendar1": "calendar.calendar1" # <--- UPDATE THIS ENTITY
+            "calendar2": "calendar.calendar2" # <--- UPDATE THIS ENTITY
+            "calendar3": "calendar.calendar3" # <--- UPDATE THIS ENTITY
+            "calendar4": "calendar.calendar4" # <--- UPDATE THIS ENTITY
+            "Family": "calendar.family" # <--- UPDATE THIS ENTITY
+          target_calendar: "{{ calendar_map.get(states('input_select.calendar_select'), 'calendar.family') }}"
       - choose:
-          # Scenario A: All Day Event
           - conditions:
               - condition: state
                 entity_id: input_boolean.calendar_all_day_event
@@ -188,8 +808,6 @@ script:
                   description: "{{ states('input_text.calendar_event_description') }}"
                   start_date: "{{ states('input_datetime.calendar_day_event_start') }}"
                   end_date: "{{ states('input_datetime.calendar_day_event_end') }}"
-          
-          # Scenario B: Timed Event
           - conditions:
               - condition: state
                 entity_id: input_boolean.calendar_all_day_event
@@ -203,8 +821,6 @@ script:
                   description: "{{ states('input_text.calendar_event_description') }}"
                   start_date_time: "{{ states('input_datetime.calendar_event_start') }}"
                   end_date_time: "{{ states('input_datetime.calendar_event_end') }}"
-
-      # Cleanup and Close
       - action: input_text.set_value
         target:
           entity_id: input_text.calendar_event_title
@@ -217,3 +833,242 @@ script:
           value: ""
       - action: browser_mod.close_popup
         data: {}
+
+  skylight_complete_chore:
+    alias: Skylight mark chore done or undo
+    mode: queued
+    max: 40
+    fields:
+      person:
+        required: true
+        selector:
+          text:
+      slot:
+        required: true
+        selector:
+          number:
+            min: 1
+            max: 8
+      streak:
+        required: true
+        selector:
+          number:
+            min: 0
+            max: 9999
+      stars_delta:
+        required: true
+        selector:
+          number:
+            min: -50
+            max: 50
+      undo:
+        selector:
+          boolean:
+    sequence:
+      - variables:
+          person_id: "{{ person }}"
+          slot_n: "{{ slot | int }}"
+          streak_n: "{{ [streak | int(0), 0] | max }}"
+          delta_n: "{{ stars_delta | int(0) }}"
+          undoing: "{{ undo | default(false) }}"
+      - condition: template
+        value_template: "{{ person_id in ['p1', 'p2', 'p3', 'p4'] and slot_n | int >= 1 and slot_n | int <= 8 }}"
+      - action: counter.set_value
+        target:
+          entity_id: "counter.skylight_{{ person_id }}_c{{ slot_n | int }}_streak"
+        data:
+          value: "{{ streak_n | int }}"
+      - action: counter.set_value
+        target:
+          entity_id: "counter.skylight_{{ person_id }}_stars"
+        data:
+          value: "{{ [(states('counter.skylight_' ~ person_id ~ '_stars') | int(0)) + (delta_n | int), 0] | max }}"
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ undoing in [true, 'true', 'True', 'on', 'yes'] }}"
+            sequence:
+              - action: input_datetime.set_datetime
+                target:
+                  entity_id: "input_datetime.skylight_{{ person_id }}_c{{ slot_n | int }}_done"
+                data:
+                  date: "2000-01-01"
+        default:
+          - action: input_datetime.set_datetime
+            target:
+              entity_id: "input_datetime.skylight_{{ person_id }}_c{{ slot_n | int }}_done"
+            data:
+              date: "{{ now().date().isoformat() }}"
+
+  skylight_redeem_reward:
+    alias: Skylight redeem a reward
+    mode: queued
+    fields:
+      person:
+        required: true
+        selector:
+          text:
+      cost:
+        required: true
+        selector:
+          number:
+            min: 1
+            max: 500
+      reward:
+        required: true
+        selector:
+          text:
+    sequence:
+      - variables:
+          person_id: "{{ person }}"
+          cost_n: "{{ cost | int(0) }}"
+          reward_name: "{{ (reward | string)[:40] }}"
+          current: "{{ states('counter.skylight_' ~ person ~ '_stars') | int(0) }}"
+      - condition: template
+        value_template: "{{ person_id in ['p1', 'p2', 'p3', 'p4'] and cost_n | int > 0 and current | int >= cost_n | int }}"
+      - action: counter.set_value
+        target:
+          entity_id: "counter.skylight_{{ person_id }}_stars"
+        data:
+          value: "{{ (current | int) - (cost_n | int) }}"
+      - action: input_text.set_value
+        target:
+          entity_id: "input_text.skylight_{{ person_id }}_rewards"
+        data:
+          value: >-
+            {% set prev = states('input_text.skylight_' ~ person_id ~ '_rewards') %}
+            {% set line = now().month ~ '/' ~ now().day ~ ' ' ~ reward_name %}
+            {{ (line ~ '\n' ~ prev)[:240] }}
+
+  skylight_set_meal:
+    alias: Skylight set a meal
+    mode: queued
+    fields:
+      day:
+        required: true
+        selector:
+          text:
+      meal:
+        required: true
+        selector:
+          text:
+      value:
+        required: false
+        selector:
+          text:
+    sequence:
+      - condition: template
+        value_template: "{{ day in ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] and meal in ['breakfast', 'lunch', 'dinner'] }}"
+      - action: input_text.set_value
+        target:
+          entity_id: "input_text.skylight_meal_{{ day }}_{{ meal }}"
+        data:
+          value: "{{ (value | default('') | string | trim)[:80] }}"
+
+  skylight_clear_meals:
+    alias: Skylight clear the weekly meal plan
+    mode: single
+    sequence:
+      - repeat:
+          for_each:
+
+            - mon_breakfast
+            - mon_lunch
+            - mon_dinner
+            - tue_breakfast
+            - tue_lunch
+            - tue_dinner
+            - wed_breakfast
+            - wed_lunch
+            - wed_dinner
+            - thu_breakfast
+            - thu_lunch
+            - thu_dinner
+            - fri_breakfast
+            - fri_lunch
+            - fri_dinner
+            - sat_breakfast
+            - sat_lunch
+            - sat_dinner
+            - sun_breakfast
+            - sun_lunch
+            - sun_dinner
+
+          sequence:
+            - action: input_text.set_value
+              target:
+                entity_id: "input_text.skylight_meal_{{ repeat.item }}"
+              data:
+                value: ""
+
+shell_command:
+  skylight_photo_manifest: >-
+    python3 -c "import json,os; p='/config/www/photos'; os.makedirs(p, exist_ok=True); ex={'.jpg','.jpeg','.png','.webp','.gif'}; fs=sorted(f for f in os.listdir(p) if os.path.splitext(f)[1].lower() in ex and f != 'manifest.json'); open(os.path.join(p,'manifest.json'),'w',encoding='utf-8').write(json.dumps({'photos':fs}))"
+
+automation:
+  - id: skylight_sleep_flag
+    alias: Skylight sleep flag
+    mode: restart
+    trigger:
+      - platform: time
+        at: input_datetime.skylight_sleep_start
+      - platform: time
+        at: input_datetime.skylight_sleep_end
+      - platform: homeassistant
+        event: start
+      - platform: state
+        entity_id:
+          - input_boolean.skylight_sleep_enabled
+          - input_datetime.skylight_sleep_start
+          - input_datetime.skylight_sleep_end
+    action:
+      - variables:
+          asleep: >-
+            {% set enabled = is_state('input_boolean.skylight_sleep_enabled', 'on') %}
+            {% set start = states('input_datetime.skylight_sleep_start') %}
+            {% set end = states('input_datetime.skylight_sleep_end') %}
+            {% set now_t = now().strftime('%H:%M:%S') %}
+            {% if not enabled or start == end %}
+            no
+            {% elif start < end %}
+            {{ 'yes' if start <= now_t < end else 'no' }}
+            {% else %}
+            {{ 'yes' if now_t >= start or now_t < end else 'no' }}
+            {% endif %}
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ asleep | trim == 'yes' }}"
+            sequence:
+              - action: input_boolean.turn_on
+                target:
+                  entity_id: input_boolean.skylight_asleep
+        default:
+          - action: input_boolean.turn_off
+            target:
+              entity_id: input_boolean.skylight_asleep
+
+  - id: skylight_photo_manifest
+    alias: Skylight refresh photo manifest
+    mode: single
+    trigger:
+      - platform: homeassistant
+        event: start
+      - platform: time_pattern
+        hours: "/6"
+    action:
+      - action: shell_command.skylight_photo_manifest
+
+# Optional: turn a smart plug or monitor off while input_boolean.skylight_asleep
+# is on. Uncomment and set your switch entity. Do not leave a missing entity id
+# in a live automation.
+#
+#  - id: skylight_screen_power
+#    alias: Skylight screen power
+#    trigger:
+#      - platform: state
+#        entity_id: input_boolean.skylight_asleep
+#    action:
+#      - action: "switch.turn_{{ 'off' if is_state('input_boolean.skylight_asleep', 'on') else 'on' }}"
+#        target:
+#          entity_id: switch.calendar_screen

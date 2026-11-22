@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Skylight preview</title>
+    <style>
+      html, body { margin: 0; height: 100%; background: #d5e3ef; }
+      skylight-wall-card { display: block; height: 100%; }
+    </style>
+  </head>
+  <body>
+    <skylight-wall-card></skylight-wall-card>
+    <script type="module">
+      await import("/www/skylight-wall/skylight-wall-card.js");
+      const params = new URLSearchParams(location.search);
+      const view = params.get("view") || "home";
+      const card = document.querySelector("skylight-wall-card");
+      card.setConfig({
+        demo: true,
+        preview: true,
+        initial_view: view === "settings" ? "home" : view,
+        initial_sheet: view === "settings" ? "settings" : null,
+        background: "/calbackgrd.png",
+        demo_celebrate: params.get("celebrate") === "1",
+      });
+      card.hass = { states: {}, callService() { return Promise.resolve({}); } };
+      window.__card = card;
+    </script>
+  </body>
+</html>

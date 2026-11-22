@@ -37,10 +37,13 @@ Skylight:
   # --- 1. Load the Font (via card-mod) from Google with special notation so it appears in the header (or it won't work) ---
   card-mod-root-yaml: |
     .: |
-      @import url('https://fonts.googleapis.com/css2?family=Ovo&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Ovo&display=swap');
   
   # defines the primary font value as "Ovo", falling back to any "serif" font if Ovo isn't available
   primary-font-family: "'Ovo', serif"
+  skylight-sans: "'Nunito', sans-serif"
+  skylight-ink: "#1d2a33"
+  skylight-accent: "#e07a5f"
 
   # --- 2. Apply the Font (using standard Home Assistant variables) ---
   # font values for for the majority of the UI (titles, sidebar, etc.) uses the naming convention:
