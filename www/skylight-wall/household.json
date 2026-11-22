@@ -1,0 +1,142 @@
+{
+  "_readme": "THIS IS THE ONLY PLACE TO CONFIGURE THE HOUSEHOLD. Edit names, colors, avatars, calendar entity ids, chore labels, rewards, meal ideas, and list entities. Then refresh the wall browser. Keep member ids (p1-p4) and chore slot numbers (1-8): those are wired to helpers in packages/family_calendar.yaml. Clear a chore name to hide that slot. Leave person_entity empty unless you have a matching person.* entity for presence.",
+  "version": 1,
+  "family_name": "Our Family",
+  "week_start": "monday",
+  "members": [
+    {
+      "id": "p1",
+      "name": "Alex",
+      "avatar": "🦊",
+      "color": "#E07A5F",
+      "calendar": "calendar.calendar1",
+      "filter_entity": "input_text.calendar1_calendar_filter",
+      "toggle_script": "script.calendar1_calendar_visible_filter",
+      "person_entity": ""
+    },
+    {
+      "id": "p2",
+      "name": "Blair",
+      "avatar": "🐬",
+      "color": "#3C9D9B",
+      "calendar": "calendar.calendar2",
+      "filter_entity": "input_text.calendar2_calendar_filter",
+      "toggle_script": "script.calendar2_calendar_visible_filter",
+      "person_entity": ""
+    },
+    {
+      "id": "p3",
+      "name": "Casey",
+      "avatar": "🌻",
+      "color": "#E0A100",
+      "calendar": "calendar.calendar3",
+      "filter_entity": "input_text.calendar3_calendar_filter",
+      "toggle_script": "script.calendar3_calendar_visible_filter",
+      "person_entity": ""
+    },
+    {
+      "id": "p4",
+      "name": "Drew",
+      "avatar": "🐧",
+      "color": "#7C6BC4",
+      "calendar": "calendar.calendar4",
+      "filter_entity": "input_text.calendar4_calendar_filter",
+      "toggle_script": "script.calendar4_calendar_visible_filter",
+      "person_entity": ""
+    }
+  ],
+  "calendars": [
+    {
+      "id": "family",
+      "name": "Family",
+      "avatar": "🏠",
+      "color": "#3D7EC8",
+      "entity": "calendar.family",
+      "filter_entity": "input_text.family_calendar_filter",
+      "toggle_script": "script.family_calendar_visible_filter"
+    },
+    {
+      "id": "birthdays",
+      "name": "Birthdays",
+      "avatar": "🎂",
+      "color": "#2E9B4F",
+      "entity": "calendar.birthdays",
+      "filter_entity": "input_text.birthdays_calendar_filter",
+      "toggle_script": "script.birthdays_calendar_visible_filter"
+    },
+    {
+      "id": "holidays",
+      "name": "Holidays",
+      "avatar": "🎉",
+      "color": "#E07A00",
+      "entity": "calendar.holidays",
+      "filter_entity": "input_text.holidays_calendar_filter",
+      "toggle_script": "script.holidays_calendar_visible_filter"
+    }
+  ],
+  "chores": [
+    {"slot": 1, "person": "p1", "name": "Make the bed", "cadence": "daily", "stars": 1, "icon": "🛏️"},
+    {"slot": 2, "person": "p1", "name": "Feed the pets", "cadence": "daily", "stars": 2, "icon": "🐾"},
+    {"slot": 3, "person": "p1", "name": "Set the table", "cadence": "daily", "stars": 1, "icon": "🍽️"},
+    {"slot": 4, "person": "p1", "name": "Tidy room", "cadence": "weekly", "stars": 4, "icon": "🧹"},
+    {"slot": 5, "person": "p1", "name": "", "cadence": "daily", "stars": 1, "icon": "⭐"},
+    {"slot": 6, "person": "p1", "name": "", "cadence": "daily", "stars": 1, "icon": "⭐"},
+    {"slot": 7, "person": "p1", "name": "", "cadence": "weekly", "stars": 3, "icon": "⭐"},
+    {"slot": 8, "person": "p1", "name": "", "cadence": "weekly", "stars": 3, "icon": "⭐"},
+
+    {"slot": 1, "person": "p2", "name": "Make the bed", "cadence": "daily", "stars": 1, "icon": "🛏️"},
+    {"slot": 2, "person": "p2", "name": "Dishes", "cadence": "daily", "stars": 2, "icon": "🫧"},
+    {"slot": 3, "person": "p2", "name": "Homework", "cadence": "daily", "stars": 2, "icon": "📚"},
+    {"slot": 4, "person": "p2", "name": "Recycling", "cadence": "weekly", "stars": 3, "icon": "♻️"},
+    {"slot": 5, "person": "p2", "name": "", "cadence": "daily", "stars": 1, "icon": "⭐"},
+    {"slot": 6, "person": "p2", "name": "", "cadence": "daily", "stars": 1, "icon": "⭐"},
+    {"slot": 7, "person": "p2", "name": "", "cadence": "weekly", "stars": 3, "icon": "⭐"},
+    {"slot": 8, "person": "p2", "name": "", "cadence": "weekly", "stars": 3, "icon": "⭐"},
+
+    {"slot": 1, "person": "p3", "name": "Make the bed", "cadence": "daily", "stars": 1, "icon": "🛏️"},
+    {"slot": 2, "person": "p3", "name": "Wipe counters", "cadence": "daily", "stars": 2, "icon": "🧽"},
+    {"slot": 3, "person": "p3", "name": "Pack bag", "cadence": "daily", "stars": 1, "icon": "🎒"},
+    {"slot": 4, "person": "p3", "name": "Fold laundry", "cadence": "weekly", "stars": 4, "icon": "👕"},
+    {"slot": 5, "person": "p3", "name": "", "cadence": "daily", "stars": 1, "icon": "⭐"},
+    {"slot": 6, "person": "p3", "name": "", "cadence": "daily", "stars": 1, "icon": "⭐"},
+    {"slot": 7, "person": "p3", "name": "", "cadence": "weekly", "stars": 3, "icon": "⭐"},
+    {"slot": 8, "person": "p3", "name": "", "cadence": "weekly", "stars": 3, "icon": "⭐"},
+
+    {"slot": 1, "person": "p4", "name": "Make the bed", "cadence": "daily", "stars": 1, "icon": "🛏️"},
+    {"slot": 2, "person": "p4", "name": "Water plants", "cadence": "daily", "stars": 1, "icon": "🌱"},
+    {"slot": 3, "person": "p4", "name": "Clear the table", "cadence": "daily", "stars": 1, "icon": "🍽️"},
+    {"slot": 4, "person": "p4", "name": "Trash night", "cadence": "weekly", "stars": 3, "icon": "🗑️"},
+    {"slot": 5, "person": "p4", "name": "", "cadence": "daily", "stars": 1, "icon": "⭐"},
+    {"slot": 6, "person": "p4", "name": "", "cadence": "daily", "stars": 1, "icon": "⭐"},
+    {"slot": 7, "person": "p4", "name": "", "cadence": "weekly", "stars": 3, "icon": "⭐"},
+    {"slot": 8, "person": "p4", "name": "", "cadence": "weekly", "stars": 3, "icon": "⭐"}
+  ],
+  "rewards": [
+    {"id": "stickers", "name": "Sticker sheet", "detail": "Pick a sheet from the drawer", "cost": 5, "emoji": "🌟"},
+    {"id": "story", "name": "Extra story", "detail": "One more chapter tonight", "cost": 8, "emoji": "📖"},
+    {"id": "dessert", "name": "Pick dessert", "detail": "You choose tonight's treat", "cost": 10, "emoji": "🍦"},
+    {"id": "music", "name": "Choose the music", "detail": "Your playlist at dinner", "cost": 12, "emoji": "🎵"},
+    {"id": "minutes", "name": "30 more minutes", "detail": "A later bedtime tonight", "cost": 18, "emoji": "🌙"},
+    {"id": "movie", "name": "Choose the movie", "detail": "Family movie, your pick", "cost": 22, "emoji": "🎬"},
+    {"id": "breakfast", "name": "Breakfast in bed", "detail": "A slow morning, delivered", "cost": 30, "emoji": "🥞"},
+    {"id": "prize", "name": "Small prize", "detail": "A little something from the shop", "cost": 50, "emoji": "🎁"}
+  ],
+  "meal_presets": [
+    "Oatmeal", "Eggs", "Yogurt", "Pancakes", "Smoothie", "Toast",
+    "Leftovers", "Soup", "Salad", "Sandwiches", "Quesadillas", "Rice bowl",
+    "Tacos", "Pasta", "Stir fry", "Pizza", "Burgers", "Roast chicken",
+    "Soup & grilled cheese", "Breakfast for dinner", "Eat out", "Takeout"
+  ],
+  "event_presets": [
+    "Practice", "Game", "Appointment", "School", "Party", "Playdate",
+    "Lessons", "Meeting", "Dentist", "Birthday", "Library", "Pickup"
+  ],
+  "list_presets": [
+    "Milk", "Eggs", "Bread", "Bananas", "Apples", "Berries",
+    "Tortillas", "Cheese", "Chicken", "Rice", "Coffee", "Yogurt"
+  ],
+  "lists": {
+    "groceries": "todo.shopping_list",
+    "todos": "todo.family_tasks"
+  }
+}

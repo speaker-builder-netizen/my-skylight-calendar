@@ -52,155 +52,218 @@ Choosing the DIY route with Home Assistant provided several benefits over buying
 * **Old Hardware:** Repurposed a Mini PC and a standard monitor.
 * **Privacy:** No vendor lock-in or risk of the company shutting down.
 
-## 🛠 Hardware Selection
+## Hardware
 
-This is currently built to show the dashboard on any HD (1920x1080) display.
+The wall UI is aimed at a **21.5-inch 1920×1080 landscape** touchscreen running Chromium in kiosk mode. Home Assistant stays on a separate always-on computer on the same Wi-Fi. The screen only loads the dashboard URL.
 
-In my case, the requirement was for it to "look like" skylight, be touchscreen, be countertop, possibility to move it to different locations. Therefore I went with the hardware described below.
-Nevertheless, you case might be different and will need you to adjust it as needed, for example if you want to display it on a tablet or something else.
+A 15-inch countertop touchscreen still works if you can stand close enough to read it. This layout is not a phone layout.
 
-The hardware I originally used I chose based on what I mentioned above plus with the hope to be able to extend functionality using the webcam, speaker and microphone. Currently I would probably build it differently now in hindsight, since I havent had time to address these additional hardware ideas.
+## What you get
 
-* **Monitor:** [HP Engage 15-inch Touchscreen](https://computers.woot.com/offers/hp-engage-16t-fhd-monitor). I chose this over generic portable monitors because it includes a built-in **Speaker, Webcam, and Microphone**, allowing for future voice control or video calls.
-* **Computer:** An old Mini PC (NUC/Tiny PC) running Windows/Linux in Kiosk mode, or a Raspberry Pi 4.~~
+One app, not a pile of unrelated cards. The left rail switches Home, Calendar, Chores, Meals, Lists, and Rewards.
 
+![Home](assets/mockups/01-home.png)
 
-## ✨ Features
+* **Home.** Clock, weather, the next event with a countdown, tonight's dinner, today's agenda, chore progress, and the grocery list.
+* **Calendar.** Agenda, week, and month for the family calendars, birthdays, and holidays. Filters per person. Add an event from big chips, with the on-screen keyboard only when the title is custom.
+* **Chores.** Daily and weekly chores per person. Tap to complete, tap again to undo. Stars, streaks, and a short celebration when a chore is finished.
+* **Meals.** A weekly breakfast, lunch, and dinner grid. It repeats until you change it. Preset meals, or type your own.
+* **Lists.** Groceries and a family to-do list, backed by Home Assistant `todo` entities so the phone app stays in sync.
+* **Rewards.** A star shop. Redeem a treat and the balance drops.
+* **Screensaver.** After the screen sits idle, photos Ken Burns across the display with the clock, weather, and what's next. Touch anywhere to come back. With no photos yet, it uses a painted sunset.
+* **Night.** The screen dims before bedtime and goes nearly black on a schedule. Touch to wake. Another idle stretch puts it back to sleep.
 
-* **Family-wide & Individual Views:** Toggle specific family members' calendars on/off.
-* **Two-way Sync:** Edit events on the screen or on our phones (Google Calendar).
-* **"Add Event" Popup:** A custom UI to add events to specific calendars directly from the screen.
-* **Weather & Date:** Beautiful, glanceable header.
-* **Responsive:** Automatically adjusts day-count based on screen width (Mobile vs Desktop).
+![Calendar](assets/mockups/02-calendar.png)
+![Chores](assets/mockups/03-chores.png)
+![Meals](assets/mockups/04-meals.png)
+![Lists](assets/mockups/05-lists.png)
+![Rewards](assets/mockups/06-rewards.png)
+![Screensaver](assets/mockups/07-screensaver.png)
+![Sleep](assets/mockups/08-sleep.png)
 
----
+## The only place to name the family
 
-## ⚙️ Installation Guide
+Edit **`www/skylight-wall/household.json`** (on the HA host: `/config/www/skylight-wall/household.json`). Then refresh the wall browser. You do not restart Home Assistant for name, color, chore, or reward changes.
 
-*Note: This setup uses a **YAML Package** to automatically create all the necessary helpers, scripts, and variables for you. You do not need to create them manually.*
+That file holds:
 
-### 1. Prerequisites (HACS)
+| Field | What to change |
+| --- | --- |
+| `family_name` | Name in the header |
+| `members[].name`, `avatar`, `color` | The four people |
+| `members[].calendar` | Their calendar entity, such as `calendar.alex` |
+| `members[].person_entity` | Optional `person.*` entity for a presence dot. Leave `""` if you don't have one |
+| `calendars` | Family, birthdays, and holidays entities |
+| `chores` | Label, daily or weekly, star value, icon. A blank `name` hides that slot |
+| `rewards` | Shop items and star costs |
+| `meal_presets`, `event_presets`, `list_presets` | Big tap targets, so common entries need no typing |
+| `lists.groceries` and `lists.todos` | Todo entity ids |
 
-You must have [HACS](https://hacs.xyz/) installed. Please install the following **Frontend** integrations:
+Keep member ids `p1`–`p4` and chore slots `1`–`8`. Those match helpers created by the package. Sample names (Alex, Blair, Casey, Drew) are placeholders.
 
-* `week-planner-card`
-* `bubble-card`
-* `config-template-card`
-* `card-mod`
-* `better-moment-card`
-* `weather-card`
-* `browser_mod` (Required for the popups to work)
-* `layout-card` (Required for the Sections view)
-* `button-card` (Required for the popup to add event)
+## Install
 
-*Note: In Settings → Devices & Services, make sure Browser Mod appears as an Integration (tile) and not only under HACS. 
-If it isn’t there, click Add Integration → Browser Mod and finish the flow, then restart HA.
-Installing via HACS only downloads files; you must add the integration so HA registers its actions/entities.
+### 1. Let Home Assistant load packages and themes
 
-### 2. The Backend (The Brains)
-
-1. Open your `configuration.yaml` file in Home Assistant.
-2. Ensure you have this line added under `homeassistant:` to enable packages:
-
-   ```yaml
-   homeassistant:
-     packages: !include_dir_named packages
-   ```
-
-3. Create a folder named `packages` in your HA config directory (if you don't have one).
-4. Download [packages/family_calendar.yaml](packages/family_calendar.yaml) from this repo.
-5. Search for string [ #<--- UPDATE THIS ENTITY]  and update the calendar entity ID to match your environment. Check section 3 for more details.
-6. Place the file inside your `packages/` folder.
-7. **Restart Home Assistant**.
-
-### 3. The Calendars
-
-You can use **Google Calendars** or **Local Calendars**.
-
-#### Option A: Reuse Calendar Names (Easiest)
-
-
-1. Go to **Settings > Devices & Services**.
-2. Add the **Local Calendar** integration.
-3. Create calendars named exactly: `calendar1`, `calendar2`, `calendar3`, `calendar4`, `Family`.
-    * *If you use these names, the code works out of the box!*
-
-#### Option B: Custom Calendar
-
-1. Go to **Settings > Devices & Services**.
-2. Add the **Local Calendar** integration. or **Google Calendar**.
-3. Navigate to **Configuration > Integrations > Local Calendar** or **Google Calendar** and select "Add Entry"
-4. For each created entry, get the entity ID for updating the dashboard.yaml file.
-5. Open `dashboard.yaml`.
-6. Search for `# <--- UPDATE THIS ENTITY`.
-7. Update the entity ID matching your environment
-
-
-#### Setting up Holidays
-
-Since Home Assistant updates, Holidays are now added via UI:
-
-1. Go to **Settings > Devices & Services > Add Integration > Holiday**.
-2. Select your country.
-3. Check the entity ID (e.g., `calendar.holidays`). If it differs from the default, update it in the dashboard YAML.
-
-### 4. The Dashboard (The Look)
-
-1. Go to **Settings > Dashboard**
-2. Click on **Add Dashboard** (Select option "New Dashboard from Scratch" make sure to select "Add to sidebar").
-3. On the left menu, select the new created dashboard and click on the pencil icon to edit it.
-5. Select the 3 dots icon and select "Raw configurator editor".
-6. Copy and paste the code from [dashboard.yaml](dashboard.yaml).
-
-### Step 5: The Theme (Optional)
-
-To get the specific font look (Ovo):
-
-1. Ensure your `configuration.yaml` has this line under `frontend:`
-
-   ```yaml
-   frontend:
-     themes: !include_dir_merge_named themes
-   ```
-
-2. Create a folder named `themes` in your config directory.
-3. Download [themes/skylight.yaml](themes/skylight.yaml) and place it in that folder.
-4. Use File Editor and upload calbackgrd.png to /www/ folder, that translates internally to /local on the dashboard.
-5. Restart Home Assistant.
-6. Go to your Profile (User Icon bottom left) and change **Theme** to `Skylight`.
-NOTE: The theme is not comprehensive, so keep that in mind
-
----
-
-## 📐 How It Works (Under the Hood)
-
-### Filter Logic
-
-The `week-planner-card` does not natively support hiding specific calendars on the fly. To solve this, I used **Input Texts** acting as Regex filters.
-
-* When you click a person's button, it toggles their filter between `.*` (Show everything) and `^$` (Show nothing).
-* `config-template-card` injects these variables into the calendar card dynamically.
-
-### Event Creation Script
-
-The "Add Event" popup uses a single script that handles logic for multiple people and event types (All Day vs Timed).
+In `configuration.yaml`:
 
 ```yaml
-# Simplified Logic Example
-target_calendar: "{{ calendar_map.get(states('input_select.calendar_select')) }}"
+homeassistant:
+  packages: !include_dir_named packages
 
-choose:
-  - conditions: "All Day Event is ON"
-    action: calendar.create_event (start_date, end_date)
-  - conditions: "All Day Event is OFF"
-    action: calendar.create_event (start_date_time, end_date_time)
+frontend:
+  themes: !include_dir_merge_named themes
 ```
 
-## NOTES
+`default_config:` already enables the shopping list (`todo.shopping_list`). If you removed `default_config:`, add `shopping_list:` yourself.
 
-My original post was just to give a high level overview of how to do it and allow people to adjust code to make it work in their specific scenarios.
+### 2. Copy the files
 
-In particular I did this because every display and need is different. I can't develop for all potential sizes of displays, dashboards, etc. So it is built to work in the display I mentioned or any (1920x1080) but should be editable for others.
+From this repo into the Home Assistant config directory:
 
-Talking about display, I originally suggested that one because it was on sale at Woot and was a very economic way to get a touchscreen display at the time. This might not be the case now, so use whatever display works for you. Tablet, touchscreen, phone, whatever. The main thing youll need to edit is the dashboard.
+| Repo | Home Assistant |
+| --- | --- |
+| `packages/family_calendar.yaml` | `/config/packages/family_calendar.yaml` |
+| `themes/skylight.yaml` | `/config/themes/skylight.yaml` |
+| `www/skylight-wall/` (the whole folder) | `/config/www/skylight-wall/` |
+| `calbackgrd.png` | `/config/www/calbackgrd.png` |
 
+`/config/www/` is served as `/local/`.
+
+### 3. Register the wall card
+
+The wall is one local Lovelace module. It is not a HACS download. In **Settings → Dashboards → Resources → Add resource**:
+
+* URL: `/local/skylight-wall/skylight-wall-card.js?v=1`
+* Type: JavaScript module
+
+Bump the `?v=` number after you replace the file, or Home Assistant will keep the old copy.
+
+### 4. Create the dashboard
+
+1. **Settings → Dashboards → Add dashboard → New dashboard from scratch.**
+2. Give it a URL path you will remember, such as `skylight`.
+3. Open the raw configuration editor and paste [`dashboard.yaml`](dashboard.yaml).
+4. Set the theme to **Skylight** (profile menu, or the theme key already on the view).
+
+Search `dashboard.yaml` for `# <--- UPDATE THIS ENTITY` and set `weather_entity` to your weather entity. Calendar ids are **not** in this file. They live in `household.json`.
+
+### 5. Restart, then name the calendars
+
+Restart Home Assistant so the package creates the helpers, scripts, and automations.
+
+Create or rename calendars (Google Calendar or Local Calendar) and put their entity ids in `household.json`:
+
+* one calendar per person (`members[].calendar`)
+* `calendar.family`, `calendar.birthdays`, and `calendar.holidays` unless you point the `calendars` entries somewhere else
+
+Holidays: **Settings → Devices & services → Add integration → Holiday**, then confirm the entity id.
+
+The legacy "add event" script in the package still has its own `# <--- UPDATE THIS ENTITY` map. The wall does not use that script. It calls `calendar.create_event` with the entity from `household.json`. Update the map only if you still call `script.add_google_calendar_event` yourself.
+
+### 6. Lists that sync to the phone
+
+* **Groceries.** `todo.shopping_list` from the built-in shopping list. Confirm the id under Developer Tools → States. If it differs, set `lists.groceries` in `household.json`.
+* **To-dos.** Settings → Devices & services → Add integration → **Local to-do**. Create a list named **Family Tasks**. The entity is usually `todo.family_tasks`. Put the real id in `lists.todos`.
+
+Add and check items on the wall or in the Home Assistant companion app. They are the same todo entities.
+
+### 7. Photos
+
+The screensaver tries these, in order:
+
+1. **Media source.** Put images in `/media/photos` (Media → local media → a folder named `photos`). The card browses `media-source://media_source/local/photos`.
+2. **www folder.** Put images in `/config/www/photos`. An automation writes `/config/www/photos/manifest.json` at startup and every six hours (`shell_command.skylight_photo_manifest`, which needs `python3` on the HA host). You can also run `python3 tools/make_photo_manifest.py /config/www/photos` by hand.
+3. **No photos yet.** A painted sunset with the clock and the next event, so the idle screen is still calm.
+
+Touch anywhere to leave the screensaver. Idle time defaults to 5 minutes. Change it from the gear at the bottom of the rail.
+
+### 8. Sleep schedule
+
+Defaults: dim the screen over the half hour before **21:30**, blank it until **06:30**, and stay awake for **10 minutes** after a tap. Further taps during the night keep extending that wake window. Change the times from the gear menu, or from the helpers:
+
+* `input_boolean.skylight_sleep_enabled`
+* `input_datetime.skylight_sleep_start`
+* `input_datetime.skylight_sleep_end`
+* `input_number.skylight_wake_minutes`
+* `input_number.skylight_idle_minutes`
+* `input_boolean.skylight_sound`
+
+`input_boolean.skylight_asleep` turns on during the sleep window even if nobody has touched the wall. Use it to cut power to a smart plug or monitor. A commented example sits at the bottom of `packages/family_calendar.yaml`. Uncomment it only after the switch entity exists.
+
+### 9. Kiosk
+
+On the wall computer, open Chromium to the dashboard and hide Home Assistant chrome:
+
+```text
+http://<home-assistant-host>:8123/skylight/home?kiosk
+```
+
+Use the URL path you chose in step 4 if it is not `skylight`. `?kiosk` hides the header and sidebar.
+
+Useful Chromium flags on the wall PC:
+
+```text
+chromium --kiosk --start-fullscreen --noerrdialogs --disable-session-crashed-bubble \
+  http://<home-assistant-host>:8123/skylight/home?kiosk
+```
+
+Leave the operating system's on-screen keyboard off. The wall draws its own keys for meals, lists, and event titles. If both keyboards appear, disable the OS one.
+
+If the panel has its own sleep timer, either turn that off and let this dashboard blank the page, or use `input_boolean.skylight_asleep` to actually cut the backlight. A CSS dim cannot turn off the backlight by itself.
+
+Log the kiosk browser into Home Assistant once and let it keep the session.
+
+## What you no longer need from HACS
+
+The wall card replaces the old stack of cards. You do **not** need `week-planner-card`, `bubble-card`, `config-template-card`, `button-card`, `layout-card`, `better-moment-card`, or `weather-card` for this dashboard.
+
+`browser_mod` is only used by the legacy `script.add_google_calendar_event` popup closer. The wall does not need it.
+
+`card-mod` is optional. The Skylight theme uses it to load fonts for the rest of Home Assistant. The wall card ships Ovo and Nunito itself (SIL Open Font License).
+
+## How chores and stars are stored
+
+The package creates, for each of `p1`–`p4` and slots `1`–`8`:
+
+* `input_datetime.skylight_p1_c1_done` — last completion date (`2000-01-01` means never)
+* `counter.skylight_p1_c1_streak`
+* `counter.skylight_p1_stars`
+* `input_text.skylight_p1_rewards` — short redemption log
+
+Meals are 21 text helpers, `input_text.skylight_meal_mon_breakfast` through `input_text.skylight_meal_sun_dinner`. They are a repeating week, not a dated history. "Clear week" empties them.
+
+The wall decides the new streak, then `script.skylight_complete_chore` stores it. Completing yesterday's chore continues the streak. Missing a day shows the streak as broken until the next completion starts it over. Undo removes the stars for that tap.
+
+## Blank calendar bug
+
+Upstream [issue #33](https://github.com/mohesles/my-skylight-calendar/issues/33) and [PR #36](https://github.com/mohesles/my-skylight-calendar/pull/36): `dashboard.yaml` used to contain this inside a `config-template-card` script:
+
+```text
+return 'monday'; # <--- UPDATE THIS IF NEEDED
+```
+
+That block is JavaScript. `#` does not comment JavaScript out, `config-template-card` threw a `SyntaxError`, and the whole calendar rendered blank. This dashboard has no embedded JavaScript. The note in `dashboard.yaml` only records why that line is gone.
+
+## Preview without Home Assistant
+
+From the repo root:
+
+```text
+python3 -m http.server 8765
+```
+
+Open `http://127.0.0.1:8765/preview/index.html`. Add `?view=chores`, `meals`, `lists`, `rewards`, `saver`, `sleep`, or `settings`. The page uses sample events and does not write to Home Assistant. `node --test tools/logic.test.mjs` checks streak, sleep, and countdown rules.
+
+## Known limits
+
+* Four people, eight chore slots each. A fifth person means new helpers, a wider allow-list in `script.skylight_complete_chore`, and `p5` in `household.json`.
+* The meal plan repeats every week. It does not keep a different menu for next month.
+* The wall can create calendar events. Home Assistant has no supported delete service, so edits and deletes stay on the phone.
+* Todo lists are not created by YAML. The shopping list comes from core. The family to-do list is a one-time Local to-do entry.
+* Photo listing needs the media browser or `manifest.json`. A folder of files with no manifest and no media source will not appear.
+* Sleep and the screensaver run in the browser. They do not power off the panel unless an automation listens to `input_boolean.skylight_asleep`.
+* The on-screen keyboard is a large A–Z board with a space and delete key. It is not a full international input method.
+* Stars live in Home Assistant counters, not in Grocy.
+* The layout targets 1920×1080. Smaller windows scroll. There is no separate phone layout.
+* `shell_command.skylight_photo_manifest` needs `python3` inside the Home Assistant environment. Media-source photos still work if that command fails.
